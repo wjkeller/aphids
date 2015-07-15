@@ -36,10 +36,36 @@ Usage from the command line:
 """
 
 import flask
+from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.script import Manager
 
 app = flask.Flask('aphids')
 app.debug = True
+db = SQLAlchemy(app)
+manager = Manager(app)
+pw_context = CryptContext(schemes=['pbkdf2_sha512'])
+
+
+class User(db.Model):
+    """
+    End user with login credentials
+    """
+
+    __tablename__ = 'aphids_users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(24), nullable=False, unique=True)
+    pw_hash = db.Column(db.Text, nullable=False)
+
+    def __init__(self, username, password):
+        self.username = username
+        self.set_password(password)
+
+    def set_password(self, password):
+        self.pw_hash = pw_context.encrypt(password)
+
+    def valid_password(self, password):
+        return pw_context.verify(password, self.pw_hash)
 
 
 if __name__ == '__main__':
-    app.run()
+    manager.run()
