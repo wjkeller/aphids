@@ -38,6 +38,7 @@ Usage from the command line:
 import flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Manager
+from passlib.context import CryptContext
 
 app = flask.Flask('aphids')
 app.debug = True
