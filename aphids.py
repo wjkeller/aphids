@@ -73,5 +73,15 @@ def welcome():
     return flask.render_template('welcome.html')
 
 
+@app.route('/login')
+def login():
+    pass
+
+
+@app.route('/register')
+def register():
+    pass
+
+
 if __name__ == '__main__':
     manager.run()

@@ -1,17 +1,40 @@
-{% block content %}
-  <pre>    |  ..  |
-    |  ()  |
-    \  /\  /
-  /\ \/  \/ /\
- /  \/    \/  \
-/   (<strong>aphids</strong>)   \
-    /\    /\ 
-   /  \__/  \
-   |<em>a python</em>|
-   |<em>identity</em>|
-   |<em> server </em>|</pre>
+{% extends 'layout.html' %}
 
-  <pre>Looks like you have decided
+{% block content %}
+<pre><span class="aphid">         |  <span class="eyes">..</span>  |
+         |  ()  |
+         \  /\  /
+       /\ \/  \/ /\
+      /  \/    \/  \
+     /   (<strong>aphids</strong>)   \
+         /\    /\ 
+        /  \__/  \
+        |<em>a python</em>|
+        |<em>identity</em>|
+        |<em> server </em>|</span>
+
+Looks like you have decided
 to <strong>APHIDS</strong> for great justice
 and extreme good. <strong>WELCOME..</strong></pre>
+
+<ul>
+  <li><a href="{{ url_for('login') }}">login</a></li>
+  <li><a href="{{ url_for('register') }}">register</a></li>
+</ul>
+{% endblock %}
+
+{% block styles %}
+  {{ super() }}
+  <style>
+    .aphid {
+        color: #093;
+    }
+    .aphid .eyes {
+        color: #900;
+    }
+    .aphid strong,
+    .aphid em {
+        color: black;
+    }
+  </style>
 {% endblock %}
