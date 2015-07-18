@@ -68,5 +68,10 @@ class User(db.Model):
         return pw_context.verify(password, self.pw_hash)
 
 
+@app.route('/')
+def welcome():
+    return flask.render_template('welcome.html')
+
+
 if __name__ == '__main__':
     manager.run()
