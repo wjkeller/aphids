@@ -3,16 +3,25 @@
 {% block title %}regsiter - {{ super() }}{% endblock %}
 
 {% block content %}
-  <h2>create aphids account</h2>
   <form method="POST">
-    {{ form.username.label }}
-    {{ form.username }}
+    <legend>create account</legend>
 
-    {{ form.password.label }}
-    {{ form.password }}
+    {{ form.csrf_token }}
 
-    {{ form.confirm_password.label }}
-    {{ form.confirm_password }}
+    <p>
+      {{ form.username.label }}
+      {{ form.username }}
+    </p>
+
+    <p>
+      {{ form.password.label }}
+      {{ form.password }}
+    </p>
+
+    <p>
+      {{ form.confirm_password.label }}
+      {{ form.confirm_password }}
+    </p>
 
     <button>register</button>
   </form>

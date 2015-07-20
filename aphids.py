@@ -76,6 +76,8 @@ class User(db.Model):
 
 class AuthenticateForm(wtf.Form):
 
+    FORM_ERRORS = object()
+
     username = wtforms.TextField(
             'username',
             validators=[validators.Required('username required')],
@@ -85,12 +87,31 @@ class AuthenticateForm(wtf.Form):
             validators=[validators.Required('password required')],
     )
 
+    def validate(self):
+        self.user = None
+        valid = super().validate()
+        if valid:
+            self.user = User.query.filter_by(username=self.username.data).first()
+            if self.user is None or not self.user.valid_password(self.password.data):
+                self.errors.setdefault(self.FORM_ERRORS, []).append('invalid credentials')
+                valid = False
+        return valid
+
 
 class RegisterForm(wtf.Form):
 
-    username = wtforms.TextField()
-    password = wtforms.PasswordField()
-    confirm_password = wtforms.PasswordField(validators=[validators.EqualTo('password')])
+    username = wtforms.TextField(
+        'username',
+        validators=[validators.Required()],
+    )
+    password = wtforms.PasswordField(
+        'password',
+        validators=[validators.Required()],
+    )
+    confirm_password = wtforms.PasswordField(
+        'confirm password',
+        validators=[validators.EqualTo('password')],
+    )
 
 
 @app.route('/')
@@ -101,14 +122,9 @@ def welcome():
 @app.route('/authenticate', methods=['GET', 'POST'])
 def authenticate():
     form = AuthenticateForm()
-    valid = form.validate_on_submit()
-    errors = list(itertools.chain(*form.errors.values()))
-    if valid:
-        user = User.query.filter_by(username=form.username.data).first()
-        if user is not None and user.valid_password(form.password.data):
-            return 'success'
-        errors.append('invalid credentials')
-    return flask.render_template('login.html', form=form, errors=errors)
+    if form.validate_on_submit():
+        return '{}'.format(form.user)
+    return flask.render_template('login.html', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -119,6 +135,16 @@ def register():
         db.session.add(user)
         db.session.commit()
     return flask.render_template('register.html', form=form)
+
+
+@app.route('/status')
+def status():
+    return flask.jsonify(status='ok')
+
+
+@app.route('/version')
+def version():
+    return flask.jsonify(version='0.1.0')
 
 
 if __name__ == '__main__':
