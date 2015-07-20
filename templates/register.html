@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block title %}regsiter - {{ super() }}{% endblock %}
+
+{% block content %}
+  <h2>create aphids account</h2>
+  <form method="POST">
+    {{ form.username.label }}
+    {{ form.username }}
+
+    {{ form.password.label }}
+    {{ form.password }}
+
+    {{ form.confirm_password.label }}
+    {{ form.confirm_password }}
+
+    <button>register</button>
+  </form>
+{% endblock %}

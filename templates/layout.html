@@ -1,10 +1,21 @@
 <!doctype html>
 <html>
   <head>
-    <title>APHIDS for justice and good</title>
-    {% block styles %}{% endblock %}
+    <meta charset="utf-8">
+    <title>{% block title %}aphids{% endblock %}</title>
+    {% block styles %}
+      <link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}">
+    {% endblock %}
   </head>
   <body>
-    {% block content %}{% endblock %}
+    <div class="container">
+      <a class="logo" href="{{ url_for('welcome') }}">
+        <img src="{{ url_for('static', filename='aphids-logo.gif') }}"
+             alt="Logo">
+        <h1>aphids</h1>
+      </a>
+
+      {% block content %}{% endblock %}
+    </div>
   </body>
 </html>

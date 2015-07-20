@@ -35,13 +35,19 @@ Usage from the command line:
     ./venv/bin/python aphids.py
 """
 
+import itertools
+
 import flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Manager
+from flask.ext import wtf
 from passlib.context import CryptContext
+import wtforms
+from wtforms import validators
 
 app = flask.Flask('aphids')
 app.debug = True
+app.secret_key = 'insecure dev key'
 db = SQLAlchemy(app)
 manager = Manager(app)
 pw_context = CryptContext(schemes=['pbkdf2_sha512'])
@@ -68,20 +74,57 @@ class User(db.Model):
         return pw_context.verify(password, self.pw_hash)
 
 
+class AuthenticateForm(wtf.Form):
+
+    username = wtforms.TextField(
+            'username',
+            validators=[validators.Required('username required')],
+    )
+    password = wtforms.PasswordField(
+            'password',
+            validators=[validators.Required('password required')],
+    )
+
+
+class RegisterForm(wtf.Form):
+
+    username = wtforms.TextField()
+    password = wtforms.PasswordField()
+    confirm_password = wtforms.PasswordField(validators=[validators.EqualTo('password')])
+
+
 @app.route('/')
 def welcome():
     return flask.render_template('welcome.html')
 
 
-@app.route('/login')
-def login():
-    pass
+@app.route('/authenticate', methods=['GET', 'POST'])
+def authenticate():
+    form = AuthenticateForm()
+    valid = form.validate_on_submit()
+    errors = list(itertools.chain(*form.errors.values()))
+    if valid:
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is not None and user.valid_password(form.password.data):
+            return 'success'
+        errors.append('invalid credentials')
+    return flask.render_template('login.html', form=form, errors=errors)
 
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    pass
+    form = RegisterForm()
+    if form.validate_on_submit():
+        user = User(**form.data)
+        db.session.add(user)
+        db.session.commit()
+    return flask.render_template('register.html', form=form)
 
 
 if __name__ == '__main__':
+    app.before_first_request(db.create_all)
+    @app.before_first_request
+    def be4():
+        db.session.add(User('test', 'pass'))
+        db.session.commit()
     manager.run()

@@ -1,5 +1,7 @@
 {% extends 'layout.html' %}
 
+{% block title %}{{ super() }} (a python identity server){% endblock %}
+
 {% block content %}
 <pre><span class="aphid">         |  <span class="eyes">..</span>  |
          |  ()  |
@@ -18,7 +20,7 @@ to <strong>APHIDS</strong> for great justice
 and extreme good. <strong>WELCOME..</strong></pre>
 
 <ul>
-  <li><a href="{{ url_for('login') }}">login</a></li>
+  <li><a href="{{ url_for('authenticate') }}">authenticate</a></li>
   <li><a href="{{ url_for('register') }}">register</a></li>
 </ul>
 {% endblock %}
