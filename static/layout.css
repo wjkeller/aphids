@@ -1,5 +1,6 @@
 body,
-form button{
+form button,
+form input {
     font-family: "Courier New", Courier, monospace;
 }
 
@@ -50,6 +51,11 @@ form input {
     margin-left: 10%;
 }
 
+form input {
+    padding: 4px;
+    margin-top: 2px;
+}
+
 form button {
     margin-left: 10%;
     background-color: white;
@@ -60,7 +66,8 @@ form button {
 }
 
 form button:hover {
-    background-color: #e3e3e3; }
+    background-color: #e3e3e3;
+}
 
 form button:active {
     transform: translate(2px, 2px);

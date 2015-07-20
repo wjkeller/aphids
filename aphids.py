@@ -68,7 +68,7 @@ class User(db.Model):
         self.set_password(password)
 
     def __repr__(self):
-        return '<User {}>'.format(username)
+        return '<User {}>'.format(self.username)
 
     def set_password(self, password):
         self.pw_hash = pw_context.encrypt(password)
@@ -153,8 +153,4 @@ def version():
 
 if __name__ == '__main__':
     app.before_first_request(db.create_all)
-    @app.before_first_request
-    def be4():
-        db.session.add(User('test', 'pass'))
-        db.session.commit()
     manager.run()
