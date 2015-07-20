@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>{% block title %}aphids{% endblock %}</title>
     {% block styles %}
+      <link rel="icon" href="{{ url_for('static', filename='aphids-logo.gif') }}">
       <link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}">
     {% endblock %}
   </head>
