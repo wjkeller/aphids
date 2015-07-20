@@ -80,11 +80,11 @@ class AuthenticateForm(wtf.Form):
 
     username = wtforms.TextField(
             'username',
-            validators=[validators.Required('username required')],
+            validators=[validators.Required('all fields required')],
     )
     password = wtforms.PasswordField(
             'password',
-            validators=[validators.Required('password required')],
+            validators=[validators.Required('all fields required')],
     )
 
     def validate(self):
@@ -102,15 +102,15 @@ class RegisterForm(wtf.Form):
 
     username = wtforms.TextField(
         'username',
-        validators=[validators.Required()],
+        validators=[validators.Required('all fields required')],
     )
     password = wtforms.PasswordField(
         'password',
-        validators=[validators.Required()],
+        validators=[validators.Required('all fields required')],
     )
     confirm_password = wtforms.PasswordField(
         'confirm password',
-        validators=[validators.EqualTo('password')],
+        validators=[validators.EqualTo('password', 'password mismatch')],
     )
 
 
@@ -131,7 +131,7 @@ def authenticate():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        user = User(**form.data)
+        user = User(form.username.data, form.password.data)
         db.session.add(user)
         db.session.commit()
     return flask.render_template('register.html', form=form)

@@ -19,7 +19,7 @@
     </p>
 
     {% if form.errors %}
-      <span class="error">{{ form.errors.username|first or form.errors.values()|first|first }}</span>
+      <span class="error">{{ form.errors.values()|first|first }}</span>
     {% endif %}
     <button>login</button>
   </form>

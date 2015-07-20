@@ -23,6 +23,9 @@
       {{ form.confirm_password }}
     </p>
 
-    <button>register</button>
+    {% if form.errors %}
+      <span class="error">{{ form.errors.values()|first|first }}</span>
+    {% endif %}
+    <button>create</button>
   </form>
 {% endblock %}
