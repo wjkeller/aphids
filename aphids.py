@@ -67,6 +67,9 @@ class User(db.Model):
         self.username = username
         self.set_password(password)
 
+    def __repr__(self):
+        return '<User {}>'.format(username)
+
     def set_password(self, password):
         self.pw_hash = pw_context.encrypt(password)
 
@@ -134,6 +137,7 @@ def register():
         user = User(form.username.data, form.password.data)
         db.session.add(user)
         db.session.commit()
+        return '{}'.format(user)
     return flask.render_template('register.html', form=form)
 
 
