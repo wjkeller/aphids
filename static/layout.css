@@ -18,7 +18,7 @@ body {
     display: inline-block;
 }
 
-h1, img, body, div, span, ul, li {
+h1, img, body, div, span, ul, li, a {
     margin: 0;
     padding: 0;
 }
@@ -122,7 +122,9 @@ form .error {
 .python-powered {
     opacity: 0.4;
     float: right;
-    margin: 6px;
+    margin-right: 6px;
+    text-decoration: none;
+    height: 40px;
 }
 .python-powered:hover {
     opacity: 1;
@@ -132,9 +134,10 @@ form .error {
     width: 100px;
     height: 40px;
     float: right;
-    margin: 6px;
+    margin-right: 6px;
     opacity: 0.4;
     background-color: #61a73e;
+    text-decoration: none;
 }
 
 .vim-powered:hover {
