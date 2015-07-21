@@ -129,8 +129,8 @@ form .error {
 }
 
 .vim-powered {
-    width: 140px;
-    height: 56px;
+    width: 100px;
+    height: 40px;
     float: right;
     margin: 6px;
     opacity: 0.4;
@@ -147,10 +147,10 @@ form .error {
     color: #61a73e;
     height: 100%;
     width: 30%;
-    line-height: 56px;
+    font-size: 13px;
+    line-height: 40px;
     text-align: center;
     font-weight: bold;
-    font-size: 18px;
 }
 
 .vim-powered .powered {
@@ -160,11 +160,11 @@ form .error {
     height: 100%;
     float: right;
     margin-top: 4px;
-    font-size: 16px;
+    font-size: 11px;
 }
 
 .vim-powered .powered strong {
-    font-size: 20px;
+    font-size: 13px;
 }
 
 .wrapper {
