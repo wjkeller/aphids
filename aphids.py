@@ -126,7 +126,7 @@ def welcome():
 def authenticate():
     form = AuthenticateForm()
     if form.validate_on_submit():
-        return '{}'.format(form.user)
+        return flask.render_template('authenticated.html', user=form.user)
     return flask.render_template('login.html', form=form)
 
 
@@ -137,7 +137,7 @@ def register():
         user = User(form.username.data, form.password.data)
         db.session.add(user)
         db.session.commit()
-        return '{}'.format(user)
+        return flask.render_template('authenticated.html', user=user)
     return flask.render_template('register.html', form=form)
 
 
