@@ -26,7 +26,7 @@ def test_welcome(client):
     assert b'good' in rv.data; assert b'justice' in rv.data
 
 
-def test_authenticate(client):
+def test_authenticate_form(client):
     rv = client.get('/authenticate')
     assert rv.status_code == 200
     doc = html.fromstring(rv.data)
@@ -40,7 +40,43 @@ def test_authenticate(client):
     assert password.type == 'password'
 
 
-def test_register(client):
+def test_authenticate_csrf(client):
+    rv = client.post('/authenticate', data={
+        'username': 'user',
+        'password': 'pass',
+    })
+    assert rv.status_code == 200
+    doc = html.fromstring(rv.data)
+    form, = doc.forms
+    error_elem, = form.cssselect('.error')
+    assert error_elem.text == 'CSRF token missing'
+
+
+@pytest.mark.parametrize('username,password,error', (
+    ('', '', 'all fields required'),
+    ('user', '', 'all fields required'),
+    ('', 'pass', 'all fields required'),
+    ('user', 'pass', 'invalid credentials'),
+))
+def test_authenticate_error(client, username, password, error):
+    rv = client.get('/authenticate')
+    doc = html.fromstring(rv.data)
+    form, = doc.forms
+    csrf_token = form.inputs['csrf_token'].value
+
+    rv = client.post('/authenticate', data={
+        'csrf_token': csrf_token,
+        'username': username,
+        'password': password,
+    })
+    assert rv.status_code == 200
+    doc = html.fromstring(rv.data)
+    form, = doc.forms
+    error_elem, = form.cssselect('.error')
+    assert error_elem.text == error
+
+
+def test_register_form(client):
     rv = client.get('/register')
     assert rv.status_code == 200
     doc = html.fromstring(rv.data)
@@ -59,4 +95,5 @@ def test_register(client):
 
 @pytest.fixture
 def client():
+    aphids.db.create_all()
     return aphids.app.test_client()
