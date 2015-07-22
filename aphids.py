@@ -116,6 +116,10 @@ class RegisterForm(wtf.Form):
         validators=[validators.EqualTo('password', 'password mismatch')],
     )
 
+    def validate_username(self, field):
+        if User.query.filter_by(username=field.data).count() > 0:
+            raise validators.ValidationError('username in use')
+
 
 @app.route('/')
 def welcome():
