@@ -11,27 +11,14 @@
     {% endblock %}
   </head>
   <body>
-    <div class="wrapper">
-      <div class="container">
-        <a class="logo" href="{{ url_for('welcome') }}">
-          <img src="{{ url_for('static', filename='aphids-logo.gif') }}"
-               alt="Logo">
-          <h1>aphids</h1>
-        </a>
+    <div class="container">
+      <a class="logo" href="{{ url_for('welcome') }}">
+        <img src="{{ url_for('static', filename='aphids-logo.gif') }}"
+             alt="Logo">
+        <h1>aphids</h1>
+      </a>
 
-        {% block content %}{% endblock %}
-
-      </div>
-      <div class="footer">
-        <a href="http://www.vim.org/" class="vim-powered">
-          <span class="vim">vim</span>
-          <span class="powered">This Site <strong>powered</strong></span>
-        </a>
-
-        <a href="https://python.org" class="python-powered">
-          <img src="{{ url_for('static', filename='python-powered-w-100x40.png') }}">
-        </a>
-      </div>
+      {% block content %}{% endblock %}
     </div>
   </body>
 </html>
