@@ -14,9 +14,13 @@ Currently developing on python 3.4.
 
 Setup:
 
-   $ pyvenv venv
-   $ ./venv/bin/pip install -r requirements.txt
+```
+$ pyvenv venv
+$ ./venv/bin/pip install -r requirements.txt
+```
 
 Run:
 
-   $ ./venv/bin/python aphids.py
+```
+$ ./venv/bin/python aphids.py
+```
