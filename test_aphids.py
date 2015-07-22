@@ -26,6 +26,12 @@ def test_welcome(client):
     assert b'good' in rv.data; assert b'justice' in rv.data
 
 
+def test_success_page(client):
+    rv = client.get('/success?user=test_success_page_user')
+    assert rv.status_code == 200
+    assert b'test_success_page_user' in rv.data
+
+
 def test_authenticate_form(client):
     rv = client.get('/authenticate')
     assert rv.status_code == 200
