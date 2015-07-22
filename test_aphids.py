@@ -78,7 +78,7 @@ def test_authenticate_error(client, username, password, error):
 
 
 def test_authenticate_success(client):
-    username = 'test_authenticate_succes_user'
+    username = 'test_authenticate_success_user'
     password = 'password'
     user = aphids.User(username, password)
     aphids.db.session.add(user)
