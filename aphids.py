@@ -115,13 +115,16 @@ class RegisterForm(wtf.Form):
         'confirm password',
         validators=[
             validators.Required('all fields required'),
-            validators.EqualTo('password', 'password mismatch'),
         ],
     )
 
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).count() > 0:
             raise validators.ValidationError('username in use')
+
+    def validate_confirm_password(self, field):
+        if field.data and self.password.data and field.data != self.password.data:
+            raise validators.ValidationError('password mismatch')
 
 
 @app.route('/')
@@ -133,7 +136,7 @@ def welcome():
 def authenticate():
     form = AuthenticateForm()
     if form.validate_on_submit():
-        return flask.render_template('authenticated.html', user=form.user)
+        return flask.redirect(flask.url_for('success', user=form.user.username))
     return flask.render_template('login.html', form=form)
 
 
@@ -144,8 +147,16 @@ def register():
         user = User(form.username.data, form.password.data)
         db.session.add(user)
         db.session.commit()
-        return flask.render_template('authenticated.html', user=user)
+        return flask.redirect(flask.url_for('success', user=user.username))
     return flask.render_template('register.html', form=form)
+
+
+@app.route('/success')
+def success():
+    user = flask.request.args.get('user')
+    if user is None:
+        return flask.redirect('welcome')
+    return flask.render_template('success.html', user=user)
 
 
 @app.route('/status')
