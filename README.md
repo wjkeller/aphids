@@ -24,3 +24,10 @@ Run:
 ```
 $ ./venv/bin/python aphids.py
 ```
+
+Test:
+
+```
+$ ./venv/bin/pip install pytest lxml cssselect
+$ ./venv/bin/py.test test_aphids.py
+```
