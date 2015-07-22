@@ -113,7 +113,10 @@ class RegisterForm(wtf.Form):
     )
     confirm_password = wtforms.PasswordField(
         'confirm password',
-        validators=[validators.EqualTo('password', 'password mismatch')],
+        validators=[
+            validators.Required('all fields required'),
+            validators.EqualTo('password', 'password mismatch'),
+        ],
     )
 
     def validate_username(self, field):
