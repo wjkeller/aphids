@@ -112,10 +112,3 @@ form .error {
 .nav a[href]:hover {
     color: #325720;
 }
-
-.footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background: red;
-}
